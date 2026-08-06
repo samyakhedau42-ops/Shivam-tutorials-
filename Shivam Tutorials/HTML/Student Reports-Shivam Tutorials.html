@@ -1,0 +1,101 @@
+﻿﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Performance Reports</title>
+    <link rel="stylesheet" href="../CSS/reports.css">
+    <link rel="stylesheet" href="../CSS/nav.css">
+    <link rel="shortcut icon" type="image/jpeg" href="../media/STlogo.png.jpeg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../JAVASCRIPT/project.js"></script>
+</head>
+<body class="body" id="body">
+
+    <div id="header"></div>
+    <div id="navbar"></div>
+    <main>
+        <div class="content-card">
+                <h2>Student Performance</h2>
+                <p>Search for a student to view their latest grades for Shivam Tutorials.</p>
+                <div class="text-center">
+                <div class="search-box" id="search-box">
+                    <input type="text" id="studentSearch" class="form-control d-inline-block shadow-sm border-secondary search-input" placeholder="Search by Name or Roll No...">
+                    <button onclick="searchStudent()" class="btn btn-primary btn-search shadow-sm px-4 fw-semibold search-button">Search</button>
+                    <!-- Add Student button removed as it's redundant with viewallpage.html -->
+                    <a href="./Students Dashboard-Shivam Tutorials.html" class="btn btn-primary shadow-sm px-4 fw-semibold view-all-button">View All Results</a>
+                </div>
+                </div>                
+                <div class="report-container" id="reportContainer" style="display: none;">
+                    <div class="report-card-header">
+                        <button class="report-card-close" type="button" onclick="hideReportCard()" aria-label="Close report card">×</button>
+                        <div class="brand-info">
+                            <h2>SHIVAM TUTORIALS</h2>
+                            <p>Empowering Academic Excellence</p>
+                        </div>
+                        <div class="student-meta">
+                            <span class="badge-term">Final Term 2026</span>
+                        </div>
+                    </div>
+
+                    <div class="student-details">
+                        <div class="detail-item">
+                            <label>Student Name</label>
+                            <p id="nameOfStudent"></p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Roll Number</label>
+                            <p id="rollOfStudent"></p>
+                        </div>
+                        <div class="detail-item">
+                            <label>Grade/Class</label>
+                            <p id="standardOfStudent">10th Standard</p>
+                        </div>
+                    </div>
+
+                    <table class="report-table">
+                        <thead>
+                            <tr>
+                                <th>Subject</th>
+                                <th>Maximum</th>
+                                <th>Obtained</th>
+                                <th>Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody id="marksOfStudent">
+                        </tbody>
+                    </table>
+
+                    <div class="report-summary">
+                        <div class="total-box">
+                            <label>Total Marks</label>
+                            <h3 id="totalMarks"></h3>
+                        </div>
+                        <div class="tutor-comment">
+                            <label>Percentage</label>
+                            <p id="percentageOfStudent"></p>
+                        </div>
+                    </div>
+
+                    <div class="report-actions">
+                        <button class="btn-print " onclick="window.print()">Download PDF</button>
+                        <span class="status-pass" id="gradeOfStudent"></span>
+                    </div>
+                </div>
+            </div>
+    </main>
+
+    <div id="footer"></div>
+
+    <!-- Modal for adding/editing students has been removed from this file to avoid duplication. It exists in viewallpage.html -->
+
+    <script>
+        $(function() {
+            loadSiteComponents();
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>

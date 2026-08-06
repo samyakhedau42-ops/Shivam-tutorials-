@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-In to shivam-Tutorials</title>
+    <link rel="stylesheet" href="../CSS/Sign-in.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="icon" type="image/jpeg" href="../media/STlogo.png.jpeg">
+    <link rel="shortcut icon" type="image/jpeg" href="../media/STlogo.png.jpeg">
+    <script>
+        const isLoggedInLocalStorage = localStorage.getItem('isLoggedIn') === 'true';
+        const isLoggedInSessionStorage = sessionStorage.getItem('isLoggedIn') === 'true';
+        const isLoggedIn = isLoggedInLocalStorage || isLoggedInSessionStorage;
+
+        // If a non-admin user is "remembered", redirect them straight to the dashboard.
+        if (isLoggedInLocalStorage && localStorage.getItem('currentUserRole') !== 'admin') {
+             window.location.href = "Students Dashboard-Shivam Tutorials.html";
+        } 
+        // If a user is not logged in at all and lands here directly (e.g., by typing the URL),
+        // redirect them to the home page to provide context before they log in.
+        else if (!isLoggedIn && document.referrer === "") {
+            window.location.href = "index.html";
+        }
+    </script>
+</head>
+<body>
+ <div class="auth-wrapper">
+  <!-- Sign Up Form -->
+  <div class="auth-form-container" id="signupContainer">
+    <h2>Sign up now</h2>
+    <form id="signupForm">
+      <div class="form-row">
+        <div class="input-group">
+          <input type="text" id="firstName" placeholder=" " required>
+          <label for="firstName">First name</label>
+        </div>
+        <div class="input-group">
+          <input type="text" id="lastName" placeholder=" " required>
+          <label for="lastName">Last name</label>
+        </div>
+      </div>
+
+      <div class="input-group">
+        <input type="email" id="email" placeholder=" " required>
+        <label for="email">Email address</label>
+      </div>
+
+      <div class="input-group">
+        <input type="password" id="password" placeholder=" " required>
+        <label for="password">Password</label>
+      </div>
+
+      <button type="submit" class="signup-btn">SIGN UP</button>
+    </form>
+    <div class="toggle-link">
+      <p>Already have an account? <a href="#" id="showLogin">Log in</a></p>
+    </div>
+    <div class="social-login">
+      <p>or sign up with:</p>
+      <div class="social-icons">
+        <!-- Social Icons -->
+        <a href="#" aria-label="Facebook"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/></svg></a>
+        <a href="#" aria-label="Google"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M15.545 6.558a9.4 9.4 0 0 1 .139 1.626c0 2.434-.87 4.492-2.384 5.885h.002C11.978 15.292 10.158 16 8 16A8 8 0 1 1 8 0a7.7 7.7 0 0 1 5.352 2.082l-2.284 2.284A4.35 4.35 0 0 0 8 3.166c-2.087 0-3.86 1.408-4.492 3.304a4.8 4.8 0 0 0 0 3.063h.003c.635 1.893 2.405 3.301 4.492 3.301 1.078 0 2.004-.276 2.722-.764h-.003a3.7 3.7 0 0 0 1.599-2.431H8v-3.08h7.545z"/></svg></a>
+        <a href="#" aria-label="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M12.6.75h2.454l-5.36 6.142L16 15.25h-4.937l-3.867-5.07-4.425 5.07H.316l5.733-6.57L0 .75h5.063l3.495 4.633L12.601.75Zm-.86 13.028h1.36L4.323 2.145H2.865l8.875 11.633Z"/></svg></a>
+        <a href="#" aria-label="GitHub"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Form -->
+  <div class="auth-form-container" id="loginContainer" style="display: none;">
+    <h2>Welcome Back</h2>
+    <form id="loginForm">
+      <div class="input-group">
+        <input type="email" id="loginEmail" placeholder=" " required>
+        <label for="loginEmail">Email address</label>
+      </div>
+      <div class="input-group">
+        <input type="password" id="loginPassword" placeholder=" " required>
+        <label for="loginPassword">Password</label>
+      </div>
+      <div class="form-options">
+        <a href="#" id="forgotPassword" class="forgot-password-link">Forgot Password?</a>
+      </div>
+      <button type="submit" class="signup-btn">LOG IN</button>
+    </form>
+    <div class="toggle-link">
+      <p>Don't have an account? <a href="#" id="showSignup">Sign up</a></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const defaultAdminUser = {
+    id: 1,
+    firstName: 'Samyak',
+    lastName: 'Hedau',
+    email: 'samyakhedau42@gmail.com',
+    password: 'samyak@m24',
+    role: 'admin'
+  };
+
+  function getUsersDatabase() {
+    try {
+      const rawUsers = localStorage.getItem('usersList');
+      if (!rawUsers) return [];
+      const parsedUsers = JSON.parse(rawUsers);
+      return Array.isArray(parsedUsers) ? parsedUsers : [];
+    } catch (error) {
+      console.error('Failed to parse usersList:', error);
+      localStorage.removeItem('usersList');
+      return [];
+    }
+  }
+
+  function saveUsersDatabase(usersDatabase) {
+    localStorage.setItem('usersList', JSON.stringify(Array.isArray(usersDatabase) ? usersDatabase : []));
+  }
+
+  function ensureAdminUser() {
+    const usersDatabase = getUsersDatabase();
+    const hasAdminUser = usersDatabase.some(user => user && user.email && user.email.toLowerCase() === defaultAdminUser.email.toLowerCase());
+
+    if (!hasAdminUser) {
+      usersDatabase.push(defaultAdminUser);
+      saveUsersDatabase(usersDatabase);
+    }
+
+    return getUsersDatabase();
+  }
+
+  const usersDatabase = ensureAdminUser();
+
+  // --- DOM Elements ---
+  const signupContainer = document.getElementById('signupContainer');
+  const loginContainer = document.getElementById('loginContainer');
+  const showLoginLink = document.getElementById('showLogin');
+  const showSignupLink = document.getElementById('showSignup');
+  const signupForm = document.getElementById('signupForm');
+  const loginForm = document.getElementById('loginForm');
+
+  // --- Helper for Loader ---
+  function showAuthLoader(message, callback) {
+    const loader = document.createElement("div");
+    loader.style.position = "fixed";
+    loader.style.top = "0";
+    loader.style.left = "0";
+    loader.style.width = "100%";
+    loader.style.height = "100%";
+    loader.style.backgroundColor = "rgba(255, 255, 255, 0.98)";
+    loader.style.zIndex = "999999";
+    loader.style.display = "flex";
+    loader.style.flexDirection = "column";
+    loader.style.justifyContent = "center";
+    loader.style.alignItems = "center";
+    
+    loader.innerHTML = `
+      <div style="width: 50px; height: 50px; border: 5px solid #e2e8f0; border-top: 5px solid #0284c7; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+      <p style="margin-top: 15px; font-weight: 600; color: #0284c7; letter-spacing: 1px;">${message}</p>
+      <style>
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+      </style>
+    `;
+    document.body.appendChild(loader);
+
+    setTimeout(() => {
+      if (callback) callback();
+    }, 500);
+  }
+
+  // --- Form Toggling ---
+  showLoginLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    signupContainer.style.display = 'none';
+    loginContainer.style.display = 'block';
+  });
+
+  showSignupLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    loginContainer.style.display = 'none';
+    signupContainer.style.display = 'block';
+  });
+
+  // --- Sign Up Logic ---
+  signupForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    
+    const firstNameInput = document.getElementById('firstName'); 
+    const lastNameInput = document.getElementById('lastName');   
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+
+    const firstName = firstNameInput.value.trim();
+    const lastName = lastNameInput.value.trim();
+    const email = emailInput.value.trim().toLowerCase();
+    const password = passwordInput.value;
+
+    if (!email.includes('@') || !email.includes('.')) {
+      Swal.fire("Invalid Input", "Please enter a valid email address!", "warning");
+      return;
+    }
+
+    let usersDatabase = getUsersDatabase();
+    const emailExists = usersDatabase.find(user => user && user.email && user.email.toLowerCase() === email);
+
+    if (emailExists) {
+      Swal.fire("Account Exists", "An account with this email already exists. Please log in instead.", "info");
+      return;
+    }
+
+    const role = email === 'samyakhedau42@gmail.com' ? 'admin' : 'user';
+    const newUser = {
+      id: Date.now(),
+      firstName,
+      lastName,
+      email,
+      password,
+      role,
+    };
+
+    const isAdmin = role === 'admin';
+    const storage = isAdmin ? sessionStorage : localStorage;
+
+    if (isAdmin) {
+        localStorage.removeItem('isLoggedIn');
+        localStorage.removeItem('currentUserEmail');
+        localStorage.removeItem('currentUserRole');
+    } else {
+        sessionStorage.removeItem('isLoggedIn');
+        sessionStorage.removeItem('currentUserEmail');
+        sessionStorage.removeItem('currentUserRole');
+    }
+
+    usersDatabase.push(newUser);
+    saveUsersDatabase(usersDatabase);
+    storage.setItem('isLoggedIn', 'true');
+    storage.setItem('currentUserEmail', email);
+    storage.setItem('currentUserRole', role);
+
+    showAuthLoader("Creating account...", () => {
+      window.location.href = "Students Dashboard-Shivam Tutorials.html";
+    });
+  });
+
+  // --- Login Logic ---
+  loginForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+    const password = document.getElementById('loginPassword').value;
+    const usersDatabase = getUsersDatabase();
+
+    let userFound = usersDatabase.find(user => user && user.email && user.email.toLowerCase() === email && user.password === password);
+
+    if (email === 'samyakhedau42@gmail.com' && password === 'samyak@m24') {
+      userFound = usersDatabase.find(user => user && user.email && user.email.toLowerCase() === email) || defaultAdminUser;
+    }
+
+    if (userFound) {
+      const isAdmin = userFound.role === 'admin' || userFound.email === 'samyakhedau42@gmail.com';
+      const storage = isAdmin ? sessionStorage : localStorage;
+
+      // Clear the other storage to prevent conflicts
+      if (isAdmin) {
+          localStorage.removeItem('isLoggedIn');
+          localStorage.removeItem('currentUserEmail');
+          localStorage.removeItem('currentUserRole');
+      } else {
+          sessionStorage.removeItem('isLoggedIn');
+          sessionStorage.removeItem('currentUserEmail');
+          sessionStorage.removeItem('currentUserRole');
+      }
+
+      storage.setItem('isLoggedIn', 'true');
+      storage.setItem('currentUserEmail', userFound.email);
+      storage.setItem('currentUserRole', userFound.role || (isAdmin ? 'admin' : 'user'));
+
+      showAuthLoader("Authenticating...", () => {
+        window.location.href = "Students Dashboard-Shivam Tutorials.html";
+      });
+    } else {
+      Swal.fire("Login Failed", "Invalid email or password. Please try again or sign up.", "error");
+    }
+  });
+
+  // --- Forgot Password Logic ---
+  document.getElementById('forgotPassword').addEventListener('click', (e) => {
+    e.preventDefault();
+    Swal.fire({
+      title: 'Recover Password',
+      input: 'email',
+      inputLabel: 'Please enter your email address to recover your password:',
+      inputPlaceholder: 'Enter your email address',
+      showCancelButton: true,
+      confirmButtonColor: '#0284c7'
+    }).then((result) => {
+      if (result.isConfirmed && result.value) {
+        const emailToRecover = result.value.trim().toLowerCase();
+        const usersDatabase = JSON.parse(localStorage.getItem('usersList')) || [];
+        const userFound = usersDatabase.find(user => user.email.toLowerCase() === emailToRecover);
+
+        if (userFound) {
+          // SECURITY VULNERABILITY: In a real app, never reveal a user's password.
+          // Simulate sending a recovery email.
+          Swal.fire('Recovery Email Sent', `If an account exists for ${emailToRecover}, a recovery link has been sent.`, 'success');
+        } else {
+          Swal.fire('Error', "No account found with that email address.", 'error');
+        }
+      }
+    });
+  });
+
+  // --- Social Login Logic (Simulation) ---
+  const socialLinks = document.querySelectorAll('.social-icons a');
+  socialLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      const platform = link.getAttribute('aria-label');
+      Swal.fire({
+        title: `Authenticate with ${platform}`,
+        input: 'email',
+        inputLabel: 'Enter your email to link/create your account:',
+        inputPlaceholder: 'Enter your email address',
+        showCancelButton: true,
+        confirmButtonColor: '#0284c7'
+      }).then((result) => {
+        if (result.isConfirmed && result.value) {
+          const email = result.value.trim().toLowerCase();
+          if (email?.includes('@') && email?.includes('.')) {
+            let usersDatabase = getUsersDatabase();
+            let userFound = usersDatabase.find(user => user.email.toLowerCase() === email);
+
+            if (!userFound) {
+              const role = email === 'samyakhedau42@gmail.com' ? 'admin' : 'user';
+              userFound = {
+                id: Date.now(),
+                firstName: platform,
+                lastName: "User",
+                email: email,
+                password: "social-login-dummy-password",
+                role: role
+              };
+              usersDatabase.push(userFound);
+              saveUsersDatabase(usersDatabase);
+            }
+
+            const isAdmin = userFound.role === 'admin';
+            const storage = isAdmin ? sessionStorage : localStorage;
+
+            if (isAdmin) {
+                localStorage.removeItem('isLoggedIn');
+                localStorage.removeItem('currentUserEmail');
+                localStorage.removeItem('currentUserRole');
+            } else {
+                sessionStorage.removeItem('isLoggedIn');
+                sessionStorage.removeItem('currentUserEmail');
+                sessionStorage.removeItem('currentUserRole');
+            }
+
+            storage.setItem('isLoggedIn', 'true');
+            storage.setItem('currentUserEmail', userFound.email);
+            storage.setItem('currentUserRole', userFound.role || (isAdmin ? 'admin' : 'user'));
+            showAuthLoader(`Authenticating with ${platform}...`, () => {
+              window.location.href = "Students Dashboard-Shivam Tutorials.html";
+            });
+          } else {
+            Swal.fire("Invalid Email", "Please enter a valid email address.", "warning");
+          }
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>
+
+<!-- 
+  NOTE: The file name "Sign-In To Shivam Tutorials .html" contains a space before the file extension.
+  This is generally not recommended as it can cause issues with some web servers or tools.
+  Consider renaming it to "sign-in.html" for better compatibility.
+  The duplicate file "Sign-In To Shivam Tutorials.html" (without the space) seems to be the one referenced by other pages.
+-->

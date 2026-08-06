@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portion - Shivam Tutorials</title>
+    <link rel="stylesheet" href="../CSS/index.css">
+    <link rel="stylesheet" href="../CSS/header.css">
+    <link rel="stylesheet" href="../CSS/nav.css">
+    <link rel="icon" type="image/jpeg" href="../media/STlogo.png.jpeg">
+    <link rel="shortcut icon" type="image/jpeg" href="../media/STlogo.png.jpeg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../JAVASCRIPT/project.js"></script>
+    <style>
+        .standards-nav .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin: 0.25rem;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            border-radius: 50rem; /* pill shape */
+        }
+        .standards-nav .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+        .standards-nav .nav-link.active {
+            background-color: var(--accent-blue);
+            color: white;
+            border-color: var(--accent-blue);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+        }
+        #portionContent {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: left;
+            min-height: 30vh;
+            transition: opacity 0.3s ease;
+            animation: fadeIn 0.5s ease-out;
+        }
+        #portionTitle {
+            color: var(--primary-dark);
+        }
+        #portionDetails .list-group {
+            margin-top: 1rem;
+        }
+        #portionDetails .list-group-item {
+            background: transparent;
+            color: white;
+            border-color: rgba(255, 255, 255, 0.2) !important;
+            padding-left: 0.5rem;
+        }
+        #portionDetails .card-text {
+            color: rgba(255, 255, 255, 0.9);
+        }
+        #portionDetails .list-group-item.sub-item {
+            padding-left: 1.5rem;
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.8);
+            border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+        }
+        #portionDetails .list-group-item.sub-item::before {
+            content: '↳';
+            margin-right: 0.75rem;
+            opacity: 0.8;
+        }
+        .list-group-item.clickable-subject {
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        .list-group-item.clickable-subject:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .list-group-item.clickable-subject::after {
+            content: '›';
+            float: right;
+            font-weight: bold;
+            font-size: 1.5em;
+            line-height: 0.8;
+            color: var(--accent-blue);
+        }
+        .term-nav .nav-link {
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 600;
+            border: none;
+            border-bottom: 2px solid transparent;
+        }
+        .term-nav .nav-link.active {
+            color: white;
+            background-color: transparent;
+            border-bottom: 2px solid var(--accent-blue);
+        }
+    </style>
+</head>
+<body class="body" id="body">
+    <div id="header"></div>
+    <div id="navbar"></div>
+
+    <main class="container my-5" style="min-height: 60vh;">
+        <h1 class="mb-4 text-center" style="color: white;">Course Portion</h1>
+        
+        <!-- Standards Navigation -->
+        <nav class="nav nav-pills flex-wrap justify-content-center mb-4 standards-nav" id="standardsNav">
+            <a class="nav-link" href="#" data-standard="1">1st</a>
+            <a class="nav-link" href="#" data-standard="2">2nd</a>
+            <a class="nav-link" href="#" data-standard="3">3rd</a>
+            <a class="nav-link" href="#" data-standard="4">4th</a>
+            <a class="nav-link" href="#" data-standard="5">5th</a>
+            <a class="nav-link" href="#" data-standard="6">6th</a>
+            <a class="nav-link" href="#" data-standard="7">7th</a>
+            <a class="nav-link" href="#" data-standard="8">8th</a>
+            <a class="nav-link" href="#" data-standard="9">9th</a>
+            <a class="nav-link" href="#" data-standard="10">10th</a>
+        </nav>
+
+        <!-- Portion Content Display -->
+        <div id="portionContent" class="card">
+            <div class="card-body">
+                <h3 id="portionTitle" class="card-title"></h3>
+                <nav class="nav nav-tabs mb-3 term-nav" id="termNav" style="display: none;">
+                    <a class="nav-link" href="#" data-term="First Term">First Term</a>
+                    <a class="nav-link" href="#" data-term="Second Term">Second Term</a>
+                </nav>
+                <div id="portionDetails"></div>
+            </div>
+        </div>
+    </main>
+
+    <div id="footer"></div>
+
+    <script>
+        $(function() {
+            loadSiteComponents();
+            
+            const portionData = {
+                1: {
+                    'First Term': [
+                        { name: 'English (My English Book 1)', lessons: ['Unit 1: Rhymes and Songs', 'Unit 2: Look, Listen and Say', 'Unit 3: Action Words', 'Unit 4: Story Time'] },
+                        { name: 'Marathi (Balbharati 1)', lessons: ['भाग १: ओळख, गाणी', 'भाग २: चित्र वाचन, शब्द ओळख'] },
+                        { name: 'Maths (Mathematics 1)', lessons: ['1. Small - Big', '2. Behind - In front of', '3. Near - Far', '4. One and Many', '5. Count 1 to 9'] },
+                        { name: 'EVS (Play, Do, Learn 1)', lessons: ['1. Myself', '2. My Body', '3. Our Senses', '4. Keeping Clean'] }
+                    ],
+                    'Second Term': [
+                        { name: 'English (My English Book 1)', lessons: ['Unit 5: Alphabet Fun', 'Unit 6: Word Building', 'Unit 7: Picture Talk', 'Unit 8: Reading Fun'] },
+                        { name: 'Marathi (Balbharati 1)', lessons: ['भाग ३: मुळाक्षरे, सोपे शब्द', 'भाग ४: वाक्यरचना, कविता'] },
+                        { name: 'Maths (Mathematics 1)', lessons: ['6. Addition', '7. Subtraction', '8. Numbers 10 to 20', '9. Shapes', '10. Measurement'] },
+                        { name: 'EVS (Play, Do, Learn 1)', lessons: ['5. My Family', '6. Our Home', '7. Plants Around Us', '8. Animals Around Us'] }
+                    ]
+                },
+                2: {
+                    'First Term': [
+                        { name: 'English (My English Book 2)', lessons: ['Unit 1: Let\'s Revise', 'Unit 2: Action Time', 'Unit 3: Let\'s Speak'] },
+                        { name: 'Marathi (Balbharati 2)', lessons: ['भाग १: कविता, धडे', 'भाग २: चित्रकथा, संवाद'] },
+                        { name: 'Maths (Mathematics 2)', lessons: ['Part 1: Let\'s find the shapes', 'Part 1: Counting in groups', 'Part 1: Addition and Subtraction'] },
+                        { name: 'EVS (Play, Do, Learn 2)', lessons: ['1. Our Needs', '2. Our Helpers', '3. Festivals', '4. Means of Transport'] }
+                    ],
+                    'Second Term': [
+                        { name: 'English (My English Book 2)', lessons: ['Unit 4: Story Time', 'Unit 5: Word Basket', 'Unit 6: Reading is Fun'] },
+                        { name: 'Marathi (Balbharati 2)', lessons: ['भाग ३: व्याकरण, पत्रलेखन', 'भाग ४: निबंध, कविता'] },
+                        { name: 'Maths (Mathematics 2)', lessons: ['Part 2: Multiplication', 'Part 2: Division', 'Part 2: Measurement', 'Part 2: Calendar'] },
+                        { name: 'EVS (Play, Do, Learn 2)', lessons: ['5. Our Village, Our City', '6. Day and Night', '7. Water', '8. Our Food'] }
+                    ]
+                },
+                3: {
+                    'First Term': [
+                        { name: 'English (My English Book 3)', lessons: ['Unit 1: Play Time', 'Unit 2: A Recipe', 'Unit 3: A Trip to the Market'] },
+                        { name: 'Marathi (Balbharati 3)', lessons: ['1. रानपाखरा', '2. आम्ही असेही बोलतो', '3. खेळूया शब्दांशी', '4. पाणी किती खोल'] },
+                        { name: 'Maths (Mathematics 3)', lessons: ['1. Introduction to Geometrical Figures', '2. Number Work', '3. Addition', '4. Subtraction'] },
+                        { name: 'EVS (Environmental Studies 3)', lessons: ['1. Our Environment', '2. So many kinds of Animals!', '3. Animal Shelters', '4. Our Body', '5. Our Diet'] }
+                    ],
+                    'Second Term': [
+                        { name: 'English (My English Book 3)', lessons: ['Unit 4: A String Song', 'Unit 5: The Story of Sindbad', 'Unit 6: A School Teacher’s Thoughts'] },
+                        { name: 'Marathi (Balbharati 3)', lessons: ['5. आम्ही कथा लिहितो', '6. स्वच्छतेचा प्रकाश', '7. आपले सण', '8. ओळख थोरांची'] },
+                        { name: 'Maths (Mathematics 3)', lessons: ['5. Multiplication', '6. Division', '7. Coins and Notes', '8. Measuring Time', '9. Patterns'] },
+                        { name: 'EVS (Environmental Studies 3)', lessons: ['6. Our Village and City', '7. My School', '8. Our Home and Environment', '9. Our Need for Water', '10. Our Clothes'] }
+                    ]
+                },
+                4: {
+                    'First Term': [
+                        { name: 'English (My English Book 4)', lessons: ['Unit 1: An Outing', 'Unit 2: A Garden of Words', 'Unit 3: A True Story of Sea Turtles'] },
+                        { name: 'Marathi (Balbharati 4)', lessons: ['1. आम्ही सारे खेळू', '2. बोलणारी नदी', '3. आम्ही संवाद लिहितो', '4. चित्रसंदेश'] },
+                        { name: 'Maths (Mathematics 4)', lessons: ['1. Geometrical Figures', '2. Number Work', '3. Addition and Subtraction', '4. Multiplication'] },
+                        { name: 'EVS 1 (History)', lessons: ['1. Maharashtra before Shivaji', '2. Work of the Saints', '3. Maratha Sardars', '4. Shahaji Raje'] },
+                        { name: 'EVS 2 (Geography & Science)', lessons: ['1. The Earth and the Living World', '2. Maps', '3. Water', '4. Food and Nutrition'] }
+                    ],
+                    'Second Term': [
+                        { name: 'English (My English Book 4)', lessons: ['Unit 4: The Kingdom of Plants', 'Unit 5: A Lesson for All', 'Unit 6: Letter Writing'] },
+                        { name: 'Marathi (Balbharati 4)', lessons: ['5. मला वाटते...', '6. मी सगळ्या भाज्या खाणार', '7. आम्ही जाहिरात वाचतो', '8. संगणकाची करामत'] },
+                        { name: 'Maths (Mathematics 4)', lessons: ['5. Division', '6. Word Problems', '7. Fractions', '8. Measurement'] },
+                        { name: 'EVS 1 (History)', lessons: ['5. The Foundation of Swaraj', '6. The Oath of Swaraj', '7. The Fort is Captured but the Lion is Dead'] },
+                        { name: 'EVS 2 (Geography & Science)', lessons: ['5. Clothes', '6. Our Occupations', '7. Our Country', '8. The Sun, Moon and Stars'] }
+                    ]
+                },
+                5: {
+                    'First Term': [
+                        { name: 'English', lessons: ['1. What a Bird Thought', '2. The Golden Touch', '3. Be a Good Speaker'] },
+                        { name: 'Marathi', lessons: ['1. माय (Mother)', '2. सावरपाडा एक्सप्रेस - कविता रौत', '3. वल्वार वल्वा'] },
+                        { name: 'Hindi', lessons: ['1. बूंदे', '2. उपयोग हमारे', '3. मुझे जानो'] },
+                        { name: 'Maths', lessons: ['1. Roman Numerals', '2. Number Work', '3. Addition and Subtraction', '4. Multiplication and Division', '5. Fractions'] },
+                        { name: 'Science', lessons: ['1. Our Earth and Our Solar System', '2. Motions of the Earth', '3. The Earth and its Living World', '4. Environmental Balance'] },
+                        { name: 'Social Science', lessons: ['History: 1. What is History?, 2. History and the Concept of ‘Time’', 'Civics: 1. Our Life in Society, 2. Diversity in Society'] }
+                    ],
+                    'Second Term': [
+                        { name: 'English', lessons: ['4. Count Your Garden', '5. A Kabaddi Match', '6. The Talkative Tortoise'] },
+                        { name: 'Marathi', lessons: ['4. मला शिकायचंय', '5. सुगरणीचे घरटे', '6. पत्र'] },
+                        { name: 'Hindi', lessons: ['4. मेरा एक सवाल', '5. रोबोट', '6. व्यायाम'] },
+                        { name: 'Maths', lessons: ['6. Angles', '7. Circles', '8. Multiples and Factors', '9. Decimal Fractions', '10. Measuring Time'] },
+                        { name: 'Science', lessons: ['5. Substances in the Surroundings', '6. Food and Nutrition', '7. Our Skeleton and the Skin', '8. Our Nervous System'] },
+                        { name: 'Social Science', lessons: ['History: 3. The Harappan Civilization, 4. The Vedic Civilization', 'Civics: 3. Rural Local Government Bodies', 'Geography: 1. Our Earth and the Globe'] }
+                    ]
+                },
+                6: {
+                    'First Term': [
+                        { name: 'English', lessons: ['1. Don\'t Give Up!', '2. Who\'s the Greatest?', '3. The Little River'] },
+                        { name: 'Marathi', lessons: ['1. भारतमाता', '2. सायकल म्हणते, मी आहे ना!', '3. डॉ. कलाम यांचे बालपण'] },
+                        { name: 'Hindi', lessons: ['1. मेला', '2. बसंती हवा', '3. उपहार'] },
+                        { name: 'Maths', lessons: ['1. Basic concepts in Geometry', '2. Angles', '3. Integers', '4. Operations on Fractions', '5. Decimal Fractions'] },
+                        { name: 'Science', lessons: ['1. Natural Resources – Air, Water and Land', '2. The Living World', '3. Diversity in Living Things and their Classification', '4. Disaster Management'] },
+                        { name: 'Social Science', lessons: ['History: 1. The Indian Subcontinent and History, 2. Sources of History', 'Civics: 1. Our Life in Society, 2. Diversity in Society', 'Geography: 1. The Earth and the Graticule, 2. Let us Use the Graticule'] }
+                    ],
+                    'Second Term': [
+                        { name: 'English', lessons: ['4. A Letter from Hingoli', '5. The Duck and the Kangaroo', '6. The Story of Sindbad the Sailor'] },
+                        { name: 'Marathi', lessons: ['4. गवतफुला रे! गवतफुला!', '5. बाकी वीस रुपयांचं काय?', '6. पण थोडा विचार करा!'] },
+                        { name: 'Hindi', lessons: ['4. जोकर', '5. (अ) आओ, आयु बताना सीखो', '6. मेरा अहोभाग्य'] },
+                        { name: 'Maths', lessons: ['6. Bar Graphs', '7. Symmetry', '8. Divisibility', '9. HCF-LCM', '10. Equations'] },
+                        { name: 'Science', lessons: ['5. Substances in the Surroundings', '6. Substances in Daily Use', '7. Nutrition and Diet', '8. Our Skeletal System and the Skin'] },
+                        { name: 'Social Science', lessons: ['History: 3. The Harappan Civilization, 4. The Vedic Civilization', 'Civics: 3. Rural Local Government Bodies, 4. Urban Local Government Bodies', 'Geography: 3. Comparing a Globe and a Map, 4. Weather and Climate'] }
+                    ]
+                },
+                7: {
+                    'First Term': [
+                        { name: 'English', lessons: ['1. Past, Present, Future', '2. A Teenager\'s Prayer', '3. In Time of Silver Rain'] },
+                        { name: 'Marathi', lessons: ['1. जय जय महाराष्ट्र माझा', '2. स्वप्न विकणारा माणूस', '3. तोडणी'] },
+                        { name: 'Hindi', lessons: ['1. वाचन मेला', '2. फूल और काँटे', '3. दादी माँ का परिवार'] },
+                        { name: 'Maths', lessons: ['1. Geometrical Constructions', '2. Multiplication and Division of Integers', '3. HCF and LCM', '4. Angles and Pairs of Angles'] },
+                        { name: 'Science', lessons: ['1. The Living World: Adaptations and Classification', '2. Plants: Structure and Function', '3. Properties of Natural Resources', '4. Nutrition in Living Organisms'] },
+                        { name: 'Social Science', lessons: ['History: 1. Sources of History, 2. India before the Times of Shivaji Maharaj', 'Civics: 1. Introduction to our Constitution, 2. Preamble to the Constitution', 'Geography: 1. How Seasons Occur - Part 1, 2. The Sun, the Moon and the Earth'] }
+                    ],
+                    'Second Term': [
+                        { name: 'English', lessons: ['4. The King\'s Choice', '5. Seeing Eyes, Helping Hands', '6. A Crow in the House'] },
+                        { name: 'Marathi', lessons: ['4. श्रावणमास', '5. भांड्यांच्या दुनियेत', '6. फरक ओळखूया'] },
+                        { name: 'Hindi', lessons: ['4. देहात और शहर', '5. बंदर का धंधा', '6. ‘पृथ्‍वी’ से ‘अग्‍नि’ तक'] },
+                        { name: 'Maths', lessons: ['5. Operations on Rational Numbers', '6. Indices', '7. Joint Bar Graph', '8. Algebraic Expressions and Operations on them'] },
+                        { name: 'Science', lessons: ['5. Food Safety', '6. Measurement of Physical Quantities', '7. Motion, Force and Work', '8. Static Electricity'] },
+                        { name: 'Social Science', lessons: ['History: 3. Religious Synthesis, 4. The Mughal Empire', 'Civics: 3. Features of the Constitution, 4. Fundamental Rights - Part 1', 'Geography: 3. Tides, 4. Air Pressure'] }
+                    ]
+                },
+                8: {
+                    'First Term': [
+                        { name: 'English', lessons: ['Unit 1: 1.1 A Time to Believe, 1.2 Dick Whittington and his Cat', 'Unit 2: 2.1 Vocation, 2.2 Nature Created Man and Woman as Equals'] },
+                        { name: 'Marathi', lessons: ['1. आम्ही चालवू हा पुढे वारसा', '2. मी चित्रकार कसा झालो!', '3. प्रभात', '4. आपण सारे एक'] },
+                        { name: 'Hindi', lessons: ['1. हे मातृभूमि!', '2. वारिस कौन?', '3. नाखून क्यों बढ़ते हैं?', '4. गाँव-शहर'] },
+                        { name: 'Maths', lessons: ['1. Rational and Irrational numbers', '2. Parallel lines and transversals', '3. Indices and Cube root', '4. Altitudes and Medians of a Triangle'] },
+                        { name: 'Science', lessons: ['1. Living World and Classification of Microbes', '2. Health and Diseases', '3. Force and Pressure', '4. Current Electricity and Magnetism'] },
+                        { name: 'History', lessons: ['1. Sources of History', '2. Europe and India', '3. Effects of British Rule'], subs: [
+                            { name: 'Civics', lessons: ['1. Introduction to the Parliamentary System', '2. The Indian Parliament'] }
+                        ]},
+                        { name: 'Geography', lessons: ['1. Local and Standard Time', '2. Interior of the Earth', '3. Humidity and Clouds'], subs: [
+                            { name: 'Economics', lessons: ['Introduction to Economics'] }
+                        ]}
+                    ],
+                    'Second Term': [
+                        { name: 'English', lessons: ['Unit 3: 3.1 The Pilgrim, 3.2 The Song of Songs', 'Unit 4: 4.1 The Unsinkable Ship, 4.2 The Luncheon'] },
+                        { name: 'Marathi', lessons: ['5. घाटात घाट वरंधाघाट', '6. आळाशी', '7. अण्णा भाऊंची भेट', '8. धाडसी कॅप्टन : राधिका मेनन'] },
+                        { name: 'Hindi', lessons: ['5. मधुबन', '6. जरा प्यार से बोलना सीख लीजे', '7. मेरे रजा साहब', '8. पूर्ण विश्राम'] },
+                        { name: 'Maths', lessons: ['5. Expansion formulae', '6. Factorisation of Algebraic expressions', '7. Variation', '8. Quadrilateral: Constructions and Types'] },
+                        { name: 'Science', lessons: ['5. Inside the Atom', '6. Composition of Matter', '7. Metals and Nonmetals', '8. Pollution', '9. Disaster Management'] },
+                        { name: 'History', lessons: ['4. The Freedom Struggle of 1857', '5. Social and Religious Reforms', '6. Beginning of Freedom Movement'], subs: [
+                            { name: 'Civics', lessons: ['3. The Union Executive', '4. The Indian Judicial System'] }
+                        ]},
+                        { name: 'Geography', lessons: ['4. Structure of Ocean Floor', '5. Ocean Currents', '6. Land Use'], subs: [
+                            { name: 'Economics', lessons: ['Sectors of Economy'] }
+                        ]}
+                    ]
+                },
+                9: {
+                    'First Term': [
+                        { name: 'English', lessons: ['Unit 1: 1.1 Walk a little slower, 1.2 The Fun they Had', 'Unit 2: 2.1 Invictus, 2.2 A True Story of Sea Turtles'] },
+                        { name: 'Marathi', lessons: ['1. सर्वात्मका शिवसुंदरा', '2. संतवाणी', '3. बेटा, मी ऐकतो आहे!', '4. जी. आय. पी. रेल्वे'] },
+                        { name: 'Hindi', lessons: ['1. चाँदनी रात', '2. बिल्ली का बिलुंगड़ा', '3. कबीर', '4. किताबें'] },
+                        { name: 'Maths', lessons: ['Algebra: 1. Sets, 2. Real Numbers, 3. Polynomials', 'Geometry: 1. Basic Concepts in Geometry, 2. Parallel Lines, 3. Triangles'] },
+                        { name: 'Science', lessons: ['1. Laws of Motion', '2. Work and Energy', '3. Current Electricity', '4. Measurement of Matter', '5. Acids, Bases, Salts'] },
+                        { name: 'History', lessons: ['1. Sources of History', '2. India: Events after 1960', '3. India’s Internal Challenges'], subs: [
+                            { name: 'Civics (Political Science)', lessons: ['1. Post World War Political Developments', '2. India’s Foreign Policy'] }
+                        ]},
+                        { name: 'Geography', lessons: ['1. Distributional Maps', '2. Endogenetic Movements', '3. Exogenetic Processes Part-1'], subs: [
+                            { name: 'Economics', lessons: ['1. Basic Concepts in Economics', '2. Money'] }
+                        ]}
+                    ],
+                    'Second Term': [
+                        { name: 'English', lessons: ['Unit 3: 3.1 Coromandel Fishers, 3.2 The Fall of Troy', 'Unit 4: 4.1 Please Listen!, 4.2 The Story of Tea'] },
+                        { name: 'Marathi', lessons: ['5. व्यायामाचे महत्त', '6. ऑलिंपिक वर्तुळांचा गोफ', '7. दिव्याच्या शोधामागचे दिव्य', '8. सखू आजी'] },
+                        { name: 'Hindi', lessons: ['5. जूलिया', '6. ऐ सखि!', '7. डॉक्टर का अपहरण', '8. वीरभूमि पर कुछ दिन'] },
+                        { name: 'Maths', lessons: ['Algebra: 4. Ratio and Proportion, 5. Linear Equations in Two Variables, 6. Financial Planning', 'Geometry: 4. Constructions of Triangles, 5. Quadrilaterals, 6. Circle'] },
+                        { name: 'Science', lessons: ['6. Classification of Plants', '7. Energy Flow in an Ecosystem', '8. Useful and Harmful Microbes', '9. Environmental Management', '10. Information Communication Technology'] },
+                        { name: 'History', lessons: ['4. Economic Development', '5. Education', '6. Empowerment of Women and other Weaker Sections'], subs: [
+                            { name: 'Civics (Political Science)', lessons: ['3. India’s Defence System', '4. The United Nations'] }
+                        ]},
+                        { name: 'Geography', lessons: ['4. Exogenetic processes Part-2', '5. Precipitation', '6. Properties of sea water'], subs: [
+                            { name: 'Economics', lessons: ['3. Poverty in India', '4. Economic Policies of India'] }
+                        ]}
+                    ]
+                },
+                10: {
+                    'First Term': [
+                        { name: 'English', lessons: ['Unit 1: 1.1 A Teenager’s Prayer, 1.2 An Encounter of a Special Kind', 'Unit 2: 2.1 You Start Dying Slowly, 2.2 The Boy who Broke The Bank'] },
+                        { name: 'Marathi', lessons: ['1. तू बुद्धी दे', '2. संतवाणी', '3. शाल', '4. उपास'] },
+                        { name: 'Hindi', lessons: ['1. भारत महिमा', '2. लक्ष्मी', '3. वाह रे, हमदर्द!', '4. मन'] },
+                        { name: 'Maths', lessons: ['Algebra: 1. Linear Equations in Two Variables, 2. Quadratic Equations, 3. Arithmetic Progression', 'Geometry: 1. Similarity, 2. Pythagoras Theorem, 3. Circle'] },
+                        { name: 'Science', lessons: ['Part 1: 1. Gravitation, 2. Periodic Classification of Elements, 3. Chemical Reactions and Equations', 'Part 2: 1. Heredity and Evolution, 2. Life Processes in Living Organisms Part -1'] },
+                        { name: 'History', lessons: ['1. Historiography: Development in the West', '2. Historiography: Indian Tradition', '3. Applied History'], subs: [
+                            { name: 'Civics (Political Science)', lessons: ['1. Working of the Constitution', '2. The Electoral Process'] }
+                        ]},
+                        { name: 'Geography', lessons: ['1. Field Visit', '2. Location and Extent', '3. Physiography and Drainage'], subs: [
+                            { name: 'Economics', lessons: ['1. Development', '2. Sectors of the Indian Economy'] }
+                        ]}
+                    ],
+                    'Second Term': [
+                        { name: 'English', lessons: ['Unit 3: 3.1 If, 3.2 A Lesson in Life from a Beggar', 'Unit 4: 4.1 The World is Mine, 4.2 Bholi'] },
+                        { name: 'Marathi', lessons: ['5. मोठे होत असलेल्या मुलांनो...', '6. वस्तू', '7. गवताचे पाते', '8. वाट पाहताना'] },
+                        { name: 'Hindi', lessons: ['5. गोवा : जैसा मैंने देखा', '6. गिरिधर नागर', '7. खुला आकाश', '8. गजल'] },
+                        { name: 'Maths', lessons: ['Algebra: 4. Financial Planning, 5. Probability, 6. Statistics', 'Geometry: 4. Geometric Constructions, 5. Co-ordinate Geometry, 6. Trigonometry, 7. Mensuration'] },
+                        { name: 'Science', lessons: ['Part 1: 4. Effects of electric current, 5. Heat, 6. Refraction of light', 'Part 2: 3. Life Processes in Living Organisms Part -2, 4. Environmental management, 5. Towards Green Energy'] },
+                        { name: 'History', lessons: ['4. History of Indian Arts', '5. Mass Media and History', '6. Entertainment and History'], subs: [
+                            { name: 'Civics (Political Science)', lessons: ['3. Political Parties', '4. Social and Political Movements'] }
+                        ]},
+                        { name: 'Geography', lessons: ['4. Climate', '5. Natural Vegetation and Wildlife', '6. Population'], subs: [
+                            { name: 'Economics', lessons: ['3. Money and Credit', '4. Globalization and the Indian Economy'] }
+                        ]}
+                    ]
+                }
+            };
+
+            const standardsNav = $('#standardsNav');
+            const termNav = $('#termNav');
+            const portionTitle = $('#portionTitle');
+            const portionDetails = $('#portionDetails');
+            const portionContent = $('#portionContent');
+
+            function getOrdinal(n) {
+                const s = ["th", "st", "nd", "rd"];
+                const v = n % 100;
+                return n + (s[(v - 20) % 10] || s[v] || s[0]);
+            }
+
+            function renderSubjects(subjects, standard, term) {
+                if (subjects && subjects.length > 0) {
+                    const subjectListHtml = `
+                        <p class="card-text">The following subjects are covered for this term:</p>
+                        <ul class="list-group list-group-flush">
+                            ${subjects.map((subject, subjectIndex) => {
+                                if (typeof subject === 'object' && subject.name) {
+                                    const hasLessons = subject.lessons && subject.lessons.length > 0;
+                                    const clickableClass = hasLessons ? 'clickable-subject' : '';
+                                    const dataAttributes = hasLessons ? `data-standard="${standard}" data-term="${term}" data-subject-index="${subjectIndex}"` : '';
+                                    
+                                    let subListHtml = '';
+                                    if (subject.subs && subject.subs.length > 0) {
+                                        subListHtml = `<ul class="list-group list-group-flush ps-3" style="margin-top: 0.25rem;">
+                                            ${subject.subs.map((sub, subIndex) => {
+                                                const hasSubLessons = sub.lessons && sub.lessons.length > 0;
+                                                const clickableSubClass = hasSubLessons ? 'clickable-subject' : '';
+                                                const subDataAttributes = hasSubLessons ? `data-standard="${standard}" data-term="${term}" data-subject-index="${subjectIndex}" data-sub-index="${subIndex}"` : '';
+                                                return `<li class="list-group-item sub-item ${clickableSubClass}" ${subDataAttributes}>${sub.name}</li>`;
+                                            }).join('')}
+                                        </ul>`;
+                                    }
+                                    return `<li class="list-group-item ${clickableClass}" ${dataAttributes}>${subject.name}${subListHtml}</li>`;
+                                }
+                                return '';
+                            }).join('')}
+                        </ul>
+                    `;
+                    portionDetails.html(subjectListHtml);
+                } else {
+                    portionDetails.html(`<p class="card-text">Syllabus details for this term will be updated here soon.</p>`);
+                }
+            }
+
+            termNav.on('click', 'a', function(e) {
+                e.preventDefault();
+                termNav.find('a').removeClass('active');
+                $(this).addClass('active');
+
+                const standard = standardsNav.find('.active').data('standard');
+                const term = $(this).data('term');
+                const subjects = portionData[standard]?.[term] || [];
+                
+                renderSubjects(subjects, standard, term);
+            });
+
+            standardsNav.on('click', 'a', function(e) {
+                e.preventDefault();
+                
+                standardsNav.find('a').removeClass('active');
+                $(this).addClass('active');
+
+                const standard = $(this).data('standard');
+                const standardOrdinal = getOrdinal(standard);
+                
+                portionContent.css('opacity', 0);
+                setTimeout(() => {
+                    portionTitle.text(`Portion for ${standardOrdinal} Standard`);
+                    termNav.show();
+                    // Trigger click on the first term to load its data by default
+                    termNav.find('a:first').trigger('click');
+                    portionContent.css('opacity', 1);
+                }, 200);
+            });
+
+            // Set initial state by activating the first standard, which will then activate the first term
+            if (standardsNav.find('a').length > 0) {
+                standardsNav.find('a:first').trigger('click');
+            }
+
+            // Handle clicking on a subject to show lessons
+            $('#portionDetails').on('click', '.clickable-subject', function() {
+                const standard = $(this).data('standard');
+                const term = $(this).data('term');
+                const subjectIndex = $(this).data('subject-index');
+                const subIndex = $(this).data('sub-index');
+
+                const termData = portionData[standard]?.[term] || [];
+                const subjectData = termData[subjectIndex];
+                let targetSubject;
+
+                if (!subjectData) return;
+
+                if (subIndex !== undefined && subjectData.subs) {
+                    targetSubject = subjectData.subs[subIndex];
+                } else {
+                    targetSubject = subjectData;
+                }
+
+                if (!targetSubject) return;
+
+                const lessons = targetSubject.lessons || [];
+
+                if (lessons.length > 0) {
+                    const lessonsHtml = `<ul class="list-group list-group-flush">${lessons.map(lesson => `<li class="list-group-item" style="background: transparent; border-color: rgba(0,0,0,0.1);">${lesson}</li>`).join('')}</ul>`;
+                    Swal.fire({
+                        title: `Lessons for ${targetSubject.name}`,
+                        html: lessonsHtml,
+                        confirmButtonText: 'Close',
+                        confirmButtonColor: '#0284c7',
+                        width: '600px',
+                        customClass: {
+                            htmlContainer: 'text-start'
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

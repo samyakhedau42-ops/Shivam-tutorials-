@@ -1,0 +1,73 @@
+.div {
+    background: linear-gradient(135deg, #7bc2f9 0%, #04303a 50%, #1e5a7a 100%);
+    background-size: 200% 200%;
+    color: white;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.532);
+    border-bottom: none;
+    animation: slideInDown 0.4s ease-out, headerGradientShift 8s ease infinite;
+}
+
+header {
+    margin: 0;
+    padding: 1rem 0;
+}
+
+.bigh {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+    letter-spacing: 0.5px;
+    color: white;
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+header h6 {
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0.5rem 0 0;
+    opacity: 0.95;
+    letter-spacing: 1px;
+}
+
+@keyframes headerGradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+@media (max-width: 480px) {
+  .bigh {
+    font-size: 1.8rem;
+    margin: 0.75rem 0;
+  }
+
+  header h6 {
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .bigh {
+    font-size: 2rem;
+  }
+
+  header h6 {
+    font-size: 1rem;
+  }
+}

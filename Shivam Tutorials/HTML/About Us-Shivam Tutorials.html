@@ -1,0 +1,146 @@
+﻿﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Shivam Tutorials</title>
+    <link rel="stylesheet" href="../CSS/index.css">
+    <link rel="stylesheet" href="../CSS/aboutus.css"> 
+    <link rel="stylesheet" href="../CSS/header.css">
+    <link rel="stylesheet" href="../CSS/nav.css">
+    <link rel="icon" type="image/jpeg" href="../media/STlogo.png.jpeg">
+    <link rel="shortcut icon" type="image/jpeg" href="../media/STlogo.png.jpeg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="../JAVASCRIPT/project.js"></script>
+</head>
+<body class="body" id="body">
+    <div id="header"></div>
+    <div id="navbar"></div>
+
+    <main class="container about-container">
+        <section class="about-hero">
+            <h1>About Shivam Tutorials</h1>
+            <p class="lead">Dedicated to Academic Excellence Since Inception</p>
+        </section>
+
+        <section class="about-section">
+            <h2>Who We Are</h2>
+            <p>Shivam Tutorials is a premier learning center dedicated to transforming students' academic journeys. With a team of passionate educators and a student-centric approach, we have consistently helped students achieve their academic goals and beyond.</p>
+        </section>
+
+        <section class="about-section">
+            <h2>Our Mission</h2>
+            <p>We aim to create an empowering educational environment that nurtures critical thinking, builds confidence, and instills a lifelong love of learning. Every student receives personalized attention and guidance tailored to their unique learning style and pace.</p>
+        </section>
+
+        <section class="about-section">
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>What We Offer</h3>
+                    <ul>
+                        <li>Small, focused batches for individual attention</li>
+                        <li>Experienced teachers with proven track records</li>
+                        <li>Structured lesson plans and regular assessments</li>
+                        <li>Comprehensive exam preparation support</li>
+                    </ul>
+                </div>
+
+                <div class="about-card">
+                    <h3>Why Choose Us</h3>
+                    <ul>
+                        <li>Expert instruction combined with supportive mentorship</li>
+                        <li>Regular progress feedback and parent communication</li>
+                        <li>Flexible scheduling to accommodate diverse needs</li>
+                        <li>Proven success rate in academic achievements</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-section">
+            <h2 class="text-center" style="border: none;">Our Impact</h2>
+            <div class="stats-container d-flex justify-content-center gap-4 flex-wrap mt-4">
+                <div class="stat-box text-center p-4 shadow-sm rounded bg-white" style="border-bottom: 4px solid var(--accent-blue); min-width: 250px; animation: scaleIn 0.5s ease-out;">
+                    <h3 class="counter display-4 fw-bold mb-2" style="color: var(--accent-blue);" data-target="2500">0</h3>
+                    <p class="text-muted fw-semibold mb-0" style="font-size: 1.1rem;">Students Taught</p>
+                </div>
+                <div class="stat-box text-center p-4 shadow-sm rounded bg-white" style="border-bottom: 4px solid var(--accent-blue); min-width: 250px; animation: scaleIn 0.7s ease-out;">
+                    <h3 class="counter display-4 fw-bold mb-2" style="color: var(--accent-blue);" data-target="7">0</h3>
+                    <p class="text-muted fw-semibold mb-0" style="font-size: 1.1rem;">Years of Experience</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-section">
+            <h2>Our Values</h2>
+            <div class="values-grid">
+                <div class="value-card">
+                    <h4>Excellence</h4>
+                    <p>We maintain the highest standards in education and student care.</p>
+                </div>
+                <div class="value-card">
+                    <h4>Integrity</h4>
+                    <p>We believe in honest, transparent communication with students and parents.</p>
+                </div>
+                <div class="value-card">
+                    <h4>Innovation</h4>
+                    <p>We continuously evolve our teaching methods for better learning outcomes.</p>
+                </div>
+                <div class="value-card">
+                    <h4>Commitment</h4>
+                    <p>We are dedicated to every student's growth and success.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer"></div>
+
+    <script>
+        $(function() {
+            loadSiteComponents();
+
+            // Animated Counters Logic
+            const counters = document.querySelectorAll('.counter');
+            
+            const animateCounters = () => {
+                counters.forEach(counter => {
+                    const target = +counter.getAttribute('data-target');
+                    const duration = 2000; // 2 seconds animation
+                    const interval = 30; // Update every 30ms
+                    const stepValue = target / (duration / interval);
+                    let currentCount = 0;
+
+                    const updateCount = () => {
+                        currentCount += stepValue;
+                        if (currentCount < target) {
+                            counter.innerText = Math.floor(currentCount);
+                            setTimeout(updateCount, interval);
+                        } else {
+                            counter.innerText = target + (target > 50 ? '+' : '');
+                        }
+                    };
+                    updateCount();
+                });
+            };
+
+            // Trigger animation when the stats section scrolls into view
+            const observer = new IntersectionObserver((entries) => {
+                if(entries[0].isIntersecting) {
+                    animateCounters();
+                    observer.disconnect();
+                }
+            });
+            
+            const statSection = document.querySelector('.stats-container');
+            if (statSection) {
+                observer.observe(statSection);
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>
+    

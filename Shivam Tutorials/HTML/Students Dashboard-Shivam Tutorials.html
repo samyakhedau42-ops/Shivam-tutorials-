@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shivam Tutorials-Empowering the Excellence</title>
+  <link rel="stylesheet" href="../CSS/reports.css">
+  <link rel="stylesheet" href="../CSS/header.css">
+  <link rel="stylesheet" href="../CSS/nav.css">
+  <link rel="icon" type="image/jpeg" href="../media/STlogo.png.jpeg">
+  <link rel="shortcut icon" type="image/jpeg" href="../media/STlogo.png.jpeg">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="../JAVASCRIPT/project.js"></script>
+    
+</head>
+
+<body class="body" id="body">
+  
+  <div id="header"></div>
+  <div id="navbar"></div>
+  
+  
+
+
+  <div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="mb-0">Student Performance Reports Directory</h2>
+      <button id="addStudentBtn" class="btn btn-primary align-items-center gap-2 px-4 py-2 rounded-pill shadow"
+        onclick="openAddStudentModal()" style="display: none;">
+        +Add New Student
+      </button>
+    </div>
+
+    <div class="mb-4">
+      <div class="input-group shadow-sm" style="max-width: 400px;">
+        <input type="text" class="form-control border-secondary" id="studentSearch" placeholder="Search by Name or Roll No..." aria-label="Search student">
+        <button class="btn btn-primary btn-search px-4 fw-semibold" type="button" onclick="searchStudent()">Search</button>
+      </div>
+    </div>
+
+    <!-- Report Card Section -->
+    <div class="report-container" id="reportContainer" style="display: none;">
+      <div class="report-card-header">
+        <button class="report-card-close" type="button" onclick="hideReportCard()" aria-label="Close report card">×</button>
+        <div class="brand-info">
+          <h2>SHIVAM TUTORIALS</h2>
+          <p>Empowering Academic Excellence</p>
+        </div>
+        <div class="student-meta">
+          <span class="badge-term">Final Term 2026</span>
+        </div>
+      </div>
+
+      <div class="student-details">
+        <div class="detail-item">
+          <label>Student Name</label>
+          <p id="nameOfStudent"></p>
+        </div>
+        <div class="detail-item">
+          <label>Roll Number</label>
+          <p id="rollOfStudent"></p>
+        </div>
+        <div class="detail-item">
+          <label>Grade/Class</label>
+          <p id="standardOfStudent">10th Standard</p>
+        </div>
+      </div>
+
+      <table class="report-table">
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Maximum</th>
+            <th>Obtained</th>
+            <th>Grade</th>
+          </tr>
+        </thead>
+        <tbody id="marksOfStudent">
+        </tbody>
+      </table>
+
+      <div class="report-summary">
+        <div class="total-box">
+          <label>Total Marks</label>
+          <h3 id="totalMarks"></h3>
+        </div>
+        <div class="tutor-comment">
+          <label>Percentage</label>
+          <p id="percentageOfStudent"></p>
+        </div>
+      </div>
+
+      <div class="report-actions">
+        <div class="d-flex gap-2">
+          <button class="btn-print" onclick="window.print()">Download PDF</button>
+          <button class="btn-cancel-report" type="button" onclick="hideReportCard()">Cancel</button>
+        </div>
+        <span class="status-pass" id="gradeOfStudent"></span>
+      </div>
+    </div>
+
+    <!-- Student Table Section -->
+    <div class="card shadow-sm overflow-hidden border-0">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+          <thead class="table-dark">
+            <tr>
+              <th scope="col">Roll No</th>
+              <th scope="col">Student Name</th>
+              <th scope="col">Standard</th>
+              <th scope="col">Total Marks</th>
+              <th scope="col">Percentage</th>
+              <th scope="col">Grade</th>
+              <th scope="col" id="actionsHeader">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="studentTableBody">
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addStudentModalLabel">Student Information Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form id="addStudentForm">
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="addStudentName" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="addStudentName" required>
+            </div>
+            <div class="mb-3">
+              <label for="addRollNumber" class="form-label">Roll Number</label>
+              <input type="number" class="form-control" id="addRollNumber" required min="1"> 
+            </div>
+            <div class="mb-3">
+              <label for="addBoard" class="form-label">Educational Board</label>
+              <select class="form-select" id="addBoard" required>
+                <option value="SSC" selected>SSC (State Board)</option>
+                <option value="CBSE">CBSE</option>
+                <option value="ICSE">ICSE</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="addStandard" class="form-label">Standard</label>
+              <select class="form-select" id="addStandard" required>
+                <option value="" disabled selected>Select Class</option>
+                <option value="1st Standard">1st Standard</option>
+                <option value="2nd Standard">2nd Standard</option>
+                <option value="3rd Standard">3rd Standard</option>
+                <option value="4th Standard">4th Standard</option>
+                <option value="5th Standard">5th Standard</option>
+                <option value="6th Standard">6th Standard</option>
+                <option value="7th Standard">7th Standard</option>
+                <option value="8th Standard">8th Standard</option>
+                <option value="9th Standard">9th Standard</option>
+                <option value="10th Standard">10th Standard</option>
+              </select>
+            </div>
+            <hr>
+            <h6 class="text-muted mb-3">Subject Mark Entry (Max 100 Each)</h6>
+            <div class="row g-3">
+              <div class="col-6">
+                <label for="addEnglishMarks" class="form-label">English</label>
+                <input type="number" class="form-control" id="addEnglishMarks" required min="0" max="100">
+              </div>
+              <div class="col-6">
+                <label for="addHindiMarks" class="form-label">Hindi</label>
+                <input type="number" class="form-control" id="addHindiMarks" required min="0" max="100">
+              </div>
+              <div class="col-6">
+                <label for="addMarathiMarks" class="form-label">Marathi</label>
+                <input type="number" class="form-control" id="addMarathiMarks" required min="0" max="100">
+              </div>
+              <div class="col-6">
+                <label for="addScienceMarks" class="form-label">Science</label>
+                <input type="number" class="form-control" id="addScienceMarks" required min="0" max="100">
+              </div>
+            <div class="col-6">
+              <label for="addMathsMarks" class="form-label">Maths</label>
+              <input type="number" class="form-control" id="addMathsMarks" min="0" max="100" required>
+            </div>
+            <div class="col-6">
+              <label for="addSocialScienceMarks" class="form-label">Social Science</label>
+              <input type="number" class="form-control" id="addSocialScienceMarks" min="0" max="100" required>
+            </div>
+            </div>
+          </div>
+          <div class="modal-footer border-0">
+            <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success rounded-pill px-4 shadow-sm">Save Report</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer"></div>
+
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+    crossorigin="anonymous"></script>
+  <script>
+    $(function () {
+      loadSiteComponents();
+    });
+  </script>
+</body>
+
+</html>

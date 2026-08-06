@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Users - Shivam Tutorials</title>
+  <link rel="stylesheet" href="../CSS/index.css" />
+  <link rel="stylesheet" href="../CSS/header.css" />
+  <link rel="stylesheet" href="../CSS/nav.css" />
+  <link rel="icon" type="image/jpeg" href="../media/STlogo.png.jpeg" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" crossorigin="anonymous" />
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="../JAVASCRIPT/project.js"></script>
+</head>
+<body class="body" id="body">
+  <div id="header"></div>
+  <div id="navbar"></div>
+
+  <main class="container my-5" style="min-height: 60vh;">
+    <div class="card shadow-lg border-0 p-0" style="border-radius: 16px; overflow: hidden;">
+      <div style="background: linear-gradient(135deg, #0f2540 0%, #1f6ecf 100%); color: white; padding: 2rem 2rem 1.25rem;">
+        <h2 class="mb-0 fw-bold" style="font-size: clamp(2rem, 2vw + 1rem, 2.8rem);">Users</h2>
+      </div>
+      <div class="card-body p-4 bg-white">
+        <div class="table-responsive">
+          <table class="table table-striped align-middle mb-0">
+            <thead class="table-dark">
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Registered User</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="usersTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div id="footer"></div>
+
+  <script>
+    $(function () {
+      loadSiteComponents();
+      const isAdmin = isCurrentUserAdmin();
+
+      if (!isAdmin) {
+        Swal.fire({
+          title: 'Access Denied',
+          text: 'Only admins can view the registered user list.',
+          icon: 'error'
+        }).then(() => {
+          window.location.href = 'index.html';
+        });
+        return;
+      }
+
+      const { email: currentUserEmail } = getCurrentUserSession();
+
+      function renderUsersTable() {
+        const usersDatabase = getUsersDatabase();
+        const tableBody = document.getElementById('usersTableBody');
+
+        const normalUsers = usersDatabase.filter(user => {
+          const email = (user.email || '').toLowerCase();
+          return email !== 'samyakhedau42@gmail.com' && user.role !== 'admin';
+        });
+
+        if (normalUsers.length === 0) {
+          tableBody.innerHTML = '<tr><td colspan="5" class="text-center text-muted py-4">No normal users found.</td></tr>';
+          return;
+        }
+
+        tableBody.innerHTML = normalUsers.map((user, index) => {
+          const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Unknown User';
+          return `
+            <tr>
+              <td>${index + 1}</td>
+              <td>${fullName}</td>
+              <td>${user.email}</td>
+              <td><span class="badge bg-secondary">Registered User</span></td>
+              <td>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm btn-outline-danger delete-user-btn" data-email="${user.email}">Kick Out</button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+
+        document.querySelectorAll('.delete-user-btn').forEach((button) => {
+          button.addEventListener('click', () => {
+            const email = button.dataset.email;
+            const targetUser = usersDatabase.find(item => (item.email || '').toLowerCase() === email.toLowerCase());
+
+            if (!targetUser) return;
+
+            if (email.toLowerCase() === (currentUserEmail || '').toLowerCase()) {
+              Swal.fire('Cannot Remove Self', 'You cannot kick out the currently logged-in user.', 'warning');
+              return;
+            }
+
+            if (email.toLowerCase() === 'samyakhedau42@gmail.com') {
+              Swal.fire('Protected User', 'The main admin account cannot be removed.', 'warning');
+              return;
+            }
+            
+            Swal.fire({
+              title: 'Kick Out User?',
+              text: `This will remove ${targetUser.firstName || 'this user'} from the system.`,
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonText: 'Yes, remove',
+              cancelButtonText: 'Cancel'
+            }).then((result) => {
+              if (!result.isConfirmed) return;
+
+              const updatedUsers = usersDatabase.filter(item => (item.email || '').toLowerCase() !== email.toLowerCase());
+              saveUsersDatabase(updatedUsers);
+              renderUsersTable();
+              Swal.fire('Removed', 'The user has been removed successfully.', 'success');
+            });
+          });
+        });
+      }
+
+      renderUsersTable();
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+</body>
+</html>
